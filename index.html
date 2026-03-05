@@ -4,12 +4,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>主要筋肉の起始・停止学習アプリ(細分化・完全版)</title>
+<title>主要筋肉の起始・停止学習アプリ(画像対応版)</title>
 <style>
 body { font-family: sans-serif; background-color: #f4fdf4; color: #333; margin: 0; padding: 20px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
 #app-wrapper { width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; }
 h1 { font-size: 20px; color: #15803d; margin-bottom: 10px; text-align: center; }
 .subtitle { font-size: 14px; color: #666; margin-bottom: 20px; text-align: center; font-weight: bold; }
+#muscle-img-wrapper { width: 100%; max-width: 400px; margin-bottom: 15px; display: none; }
+#muscle-img { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
 #quiz-container { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; box-sizing: border-box; }
 .question { font-size: 18px; font-weight: bold; margin-bottom: 20px; text-align: center; line-height: 1.4; color: #065f46; }
 .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; font-size: 14px; background-color: #f1f5f9; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s; box-sizing: border-box; text-align: left; line-height: 1.4; }
@@ -34,6 +36,11 @@ h1 { font-size: 20px; color: #15803d; margin-bottom: 10px; text-align: center; }
 <body>
 
 <div id="app-wrapper">
+
+<div id="muscle-img-wrapper">
+<img id="muscle-img" src="" alt="筋肉画像" onerror="this.style.display='none'">
+</div>
+
 <div id="quiz-container">
 
 <div id="start-screen">
@@ -72,75 +79,75 @@ document.getElementById('start-logo-img').addEventListener('error', function() {
 document.getElementById('footer-logo-img').addEventListener('error', function() { this.style.display='none'; });
 
 const quizData = [
-{ question: "「大胸筋(鎖骨部)」の起始はどれ？", choices: ["鎖骨内側1/2", "胸骨・第2~6肋軟骨", "腹直筋鞘", "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜"], answer: "鎖骨内側1/2" },
-{ question: "「大胸筋(胸肋部)」の起始はどれ？", choices: ["鎖骨内側1/2", "胸骨・第2~6肋軟骨", "腹直筋鞘", "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜"], answer: "胸骨・第2~6肋軟骨" },
-{ question: "「大胸筋(腹部)」の起始はどれ？", choices: ["鎖骨内側1/2", "胸骨・第2~6肋軟骨", "腹直筋鞘", "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜"], answer: "腹直筋鞘" },
-{ question: "「大胸筋」の停止はどれ？", choices: ["上腕骨大結節稜", "上腕骨小結節稜", "上腕骨三角筋粗面", "鎖骨外側1/3 肩峰・肩甲棘"], answer: "上腕骨大結節稜" },
-{ question: "「広背筋」の起始はどれ？", choices: ["鎖骨内側1/2、胸骨・第2~6肋軟骨、腹直筋鞘", "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜、下部肋骨3~4本", "後頭骨・項靭帯・第1~7頸椎棘突起", "長頭:関節下結節、外側頭:上腕骨後面(近位)"], answer: "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜、下部肋骨3~4本" },
-{ question: "「広背筋」の停止はどれ？", choices: ["上腕骨大結節稜", "上腕骨小結節稜", "上腕骨三角筋粗面", "尺骨肘頭"], answer: "上腕骨小結節稜" },
-{ question: "「三角筋(前部)」の起始はどれ？", choices: ["鎖骨外側1/3", "肩峰", "肩甲棘", "烏口突起"], answer: "鎖骨外側1/3" },
-{ question: "「三角筋(中部)」の起始はどれ？", choices: ["鎖骨外側1/3", "肩峰", "肩甲棘", "関節上結節"], answer: "肩峰" },
-{ question: "「三角筋(後部)」の起始はどれ？", choices: ["鎖骨外側1/3", "肩峰", "肩甲棘", "関節下結節"], answer: "肩甲棘" },
-{ question: "「三角筋」の停止はどれ？", choices: ["上腕骨大結節稜", "上腕骨小結節稜", "上腕骨三角筋粗面", "鎖骨外側1/3 肩峰・肩甲棘"], answer: "上腕骨三角筋粗面" },
-{ question: "「僧帽筋(上部)」の起始はどれ？", choices: ["後頭骨・項靭帯・第1~7頸椎棘突起", "第1~12胸椎棘突起", "鎖骨外側1/3", "肩峰"], answer: "後頭骨・項靭帯・第1~7頸椎棘突起" },
-{ question: "「僧帽筋(中部・下部)」の起始はどれ？", choices: ["後頭骨・項靭帯・第1~7頸椎棘突起", "第1~12胸椎棘突起", "肩甲棘", "下前腸骨棘"], answer: "第1~12胸椎棘突起" },
-{ question: "「僧帽筋」の停止はどれ？", choices: ["上腕骨三角筋粗面", "鎖骨外側1/3 肩峰・肩甲棘", "橈骨粗面・前腕筋膜", "尺骨肘頭"], answer: "鎖骨外側1/3 肩峰・肩甲棘" },
-{ question: "「上腕二頭筋(短頭)」の起始はどれ？", choices: ["烏口突起", "関節上結節", "関節下結節", "上腕骨後面(近位)"], answer: "烏口突起" },
-{ question: "「上腕二頭筋(長頭)」の起始はどれ？", choices: ["烏口突起", "関節上結節", "関節下結節", "上腕骨後面(近位)"], answer: "関節上結節" },
-{ question: "「上腕二頭筋」の停止はどれ？", choices: ["上腕骨三角筋粗面", "鎖骨外側1/3 肩峰・肩甲棘", "橈骨粗面・前腕筋膜", "尺骨肘頭"], answer: "橈骨粗面・前腕筋膜" },
-{ question: "「上腕三頭筋(長頭)」の起始はどれ？", choices: ["烏口突起", "関節上結節", "関節下結節", "上腕骨後面(近位)"], answer: "関節下結節" },
-{ question: "「上腕三頭筋(外側頭)」の起始はどれ？", choices: ["関節下結節", "上腕骨後面(近位)", "上腕骨後面(遠位)", "上腕骨前面遠位1/2"], answer: "上腕骨後面(近位)" },
-{ question: "「上腕三頭筋(内側頭)」の起始はどれ？", choices: ["関節下結節", "上腕骨後面(近位)", "上腕骨後面(遠位)", "上腕骨前面遠位1/2"], answer: "上腕骨後面(遠位)" },
-{ question: "「上腕三頭筋」の停止はどれ？", choices: ["橈骨粗面・前腕筋膜", "尺骨肘頭", "尺骨粗面", "上腕骨内側面中部"], answer: "尺骨肘頭" },
-{ question: "「上腕筋」の起始はどれ？", choices: ["上腕骨後面(近位)", "上腕骨前面遠位1/2", "烏口突起", "内側上顆・尺骨・橈骨"], answer: "上腕骨前面遠位1/2" },
-{ question: "「上腕筋」の停止はどれ？", choices: ["尺骨肘頭", "尺骨粗面", "上腕骨内側面中部", "第2~5指中節骨"], answer: "尺骨粗面" },
-{ question: "「烏口腕筋」の起始はどれ？", choices: ["上腕骨前面遠位1/2", "烏口突起", "内側上顆・尺骨・橈骨", "上腕骨外側上顆"], answer: "烏口突起" },
-{ question: "「烏口腕筋」の停止はどれ？", choices: ["尺骨粗面", "上腕骨内側面中部", "第2~5指中節骨", "第2~5指末節背側"], answer: "上腕骨内側面中部" },
-{ question: "「前腕屈筋群(浅指屈筋)」の起始はどれ？", choices: ["烏口突起", "内側上顆・尺骨・橈骨", "上腕骨外側上顆", "下前腸骨棘"], answer: "内側上顆・尺骨・橈骨" },
-{ question: "「前腕屈筋群(浅指屈筋)」の停止はどれ？", choices: ["上腕骨内側面中部", "第2~5指中節骨", "第2~5指末節背側", "膝蓋骨→脛骨粗面"], answer: "第2~5指中節骨" },
-{ question: "「前腕伸筋群(総指伸筋)」の起始はどれ？", choices: ["内側上顆・尺骨・橈骨", "上腕骨外側上顆", "下前腸骨棘", "大転子・転子間線"], answer: "上腕骨外側上顆" },
-{ question: "「前腕伸筋群(総指伸筋)」の停止はどれ？", choices: ["第2~5指中節骨", "第2~5指末節背側", "膝蓋骨→脛骨粗面", "腓骨頭"], answer: "第2~5指末節背側" },
-{ question: "「大腿四頭筋(大腿直筋)」の起始はどれ？", choices: ["上腕骨外側上顆", "下前腸骨棘", "大転子・転子間線", "大腿骨内側面"], answer: "下前腸骨棘" },
-{ question: "「大腿四頭筋(大腿直筋)」の停止はどれ？", choices: ["第2~5指末節背側", "膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側後面"], answer: "膝蓋骨→脛骨粗面" },
-{ question: "「大腿四頭筋(外側広筋)」の起始はどれ？", choices: ["下前腸骨棘", "大転子・転子間線", "大腿骨内側面", "大腿骨前外側面"], answer: "大転子・転子間線" },
-{ question: "「大腿四頭筋(外側広筋)」の停止はどれ？", choices: ["膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側後面", "脛骨内側前面(鵞足)"], answer: "膝蓋骨→脛骨粗面" },
-{ question: "「大腿四頭筋(内側広筋)」の起始はどれ？", choices: ["大転子・転子間線", "大腿骨内側面", "大腿骨前外側面", "坐骨結節"], answer: "大腿骨内側面" },
-{ question: "「大腿四頭筋(内側広筋)」の停止はどれ？", choices: ["膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側後面", "大腿骨殿筋粗面・腸脛靭帯"], answer: "膝蓋骨→脛骨粗面" },
-{ question: "「大腿四頭筋(中間広筋)」の起始はどれ？", choices: ["大腿骨内側面", "大腿骨前外側面", "坐骨結節", "大腿骨粗線"], answer: "大腿骨前外側面" },
-{ question: "「大腿四頭筋(中間広筋)」の停止はどれ？", choices: ["膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側前面(鵞足)", "大転子"], answer: "膝蓋骨→脛骨粗面" },
-{ question: "「ハムストリング(大腿二頭筋・長頭)」の起始はどれ？", choices: ["大腿骨前外側面", "坐骨結節", "大腿骨粗線", "腸骨稜・仙骨・尾骨・仙結節靭帯"], answer: "坐骨結節" },
-{ question: "「ハムストリング(大腿二頭筋・短頭)」の起始はどれ？", choices: ["坐骨結節", "大腿骨粗線", "腸骨稜・仙骨・尾骨・仙結節靭帯", "腸骨外側面"], answer: "大腿骨粗線" },
-{ question: "「ハムストリング(大腿二頭筋)」の停止はどれ？", choices: ["膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側後面", "脛骨内側前面(鵞足)"], answer: "腓骨頭" },
-{ question: "「ハムストリング(半膜様筋)」の起始はどれ？", choices: ["坐骨結節", "大腿骨粗線", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節"], answer: "坐骨結節" },
-{ question: "「ハムストリング(半膜様筋)」の停止はどれ？", choices: ["腓骨頭", "脛骨内側後面", "脛骨内側前面(鵞足)", "大腿骨殿筋粗面・腸脛靭帯"], answer: "脛骨内側後面" },
-{ question: "「ハムストリング(半腱様筋)」の起始はどれ？", choices: ["坐骨結節", "大腿骨粗線", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節"], answer: "坐骨結節" },
-{ question: "「ハムストリング(半腱様筋)」の停止はどれ？", choices: ["脛骨内側後面", "脛骨内側前面(鵞足)", "大腿骨殿筋粗面・腸脛靭帯", "大転子"], answer: "脛骨内側前面(鵞足)" },
-{ question: "「大臀筋」の起始はどれ？", choices: ["坐骨結節", "腸骨稜・仙骨・尾骨・仙結節靭帯", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節"], answer: "腸骨稜・仙骨・尾骨・仙結節靭帯" },
-{ question: "「大臀筋」の停止はどれ？", choices: ["脛骨内側前面(鵞足)", "大腿骨殿筋粗面・腸脛靭帯", "大転子", "大転子前面"], answer: "大腿骨殿筋粗面・腸脛靭帯" },
-{ question: "「中臀筋」の起始はどれ？", choices: ["腸骨稜・仙骨・尾骨・仙結節靭帯", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節", "上前腸骨棘"], answer: "腸骨外側面" },
-{ question: "「中臀筋」の停止はどれ？", choices: ["大腿骨殿筋粗面・腸脛靭帯", "大転子", "大転子前面", "大腿骨粗線・内転筋結節"], answer: "大転子" },
-{ question: "「小臀筋」の起始はどれ？", choices: ["腸骨稜・仙骨・尾骨・仙結節靭帯", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節", "大腿骨内外側上顆"], answer: "腸骨外側面" },
-{ question: "「小臀筋」の停止はどれ？", choices: ["大転子", "大転子前面", "大腿骨粗線・内転筋結節", "脛骨内側前面(鵞足)"], answer: "大転子前面" },
-{ question: "「内転筋群(大内転筋)」の起始はどれ？", choices: ["腸骨外側面", "恥骨枝・坐骨枝・坐骨結節", "上前腸骨棘", "大腿骨内外側上顆"], answer: "恥骨枝・坐骨枝・坐骨結節" },
-{ question: "「内転筋群(大内転筋)」の停止はどれ？", choices: ["大転子前面", "大腿骨粗線・内転筋結節", "脛骨内側前面(鵞足)", "踵骨隆起(アキレス腱)"], answer: "大腿骨粗線・内転筋結節" },
-{ question: "「縫工筋」の起始はどれ？", choices: ["恥骨枝・坐骨枝・坐骨結節", "上前腸骨棘", "大腿骨内外側上顆", "腓骨頭・脛骨ヒラメ筋線"], answer: "上前腸骨棘" },
-{ question: "「縫工筋」の停止はどれ？", choices: ["大腿骨粗線・内転筋結節", "脛骨内側前面(鵞足)", "踵骨隆起(アキレス腱)", "内側楔状骨・第1中足骨底"], answer: "脛骨内側前面(鵞足)" },
-{ question: "「腓腹筋」の起始はどれ？", choices: ["上前腸骨棘", "大腿骨内外側上顆", "腓骨頭・脛骨ヒラメ筋線", "脛骨外側面・骨間膜"], answer: "大腿骨内外側上顆" },
-{ question: "「腓腹筋」の停止はどれ？", choices: ["脛骨内側前面(鵞足)", "踵骨隆起(アキレス腱)", "内側楔状骨・第1中足骨底", "第1中足骨底・内側楔状骨"], answer: "踵骨隆起(アキレス腱)" },
-{ question: "「ヒラメ筋」の起始はどれ？", choices: ["大腿骨内外側上顆", "腓骨頭・脛骨ヒラメ筋線", "脛骨外側面・骨間膜", "腓骨上1/2外側面"], answer: "腓骨頭・脛骨ヒラメ筋線" },
-{ question: "「ヒラメ筋」の停止はどれ？", choices: ["踵骨隆起(アキレス腱)", "内側楔状骨・第1中足骨底", "第1中足骨底・内側楔状骨", "第5~7肋軟骨・剣状突起"], answer: "踵骨隆起(アキレス腱)" },
-{ question: "「前脛骨筋」の起始はどれ？", choices: ["腓骨頭・脛骨ヒラメ筋線", "脛骨外側面・骨間膜", "腓骨上1/2外側面", "恥骨"], answer: "脛骨外側面・骨間膜" },
-{ question: "「前脛骨筋」の停止はどれ？", choices: ["踵骨隆起(アキレス腱)", "内側楔状骨・第1中足骨底", "第1中足骨底・内側楔状骨", "第5~7肋軟骨・剣状突起"], answer: "内側楔状骨・第1中足骨底" },
-{ question: "「腓骨筋(長腓骨筋)」の起始はどれ？", choices: ["脛骨外側面・骨間膜", "腓骨上1/2外側面", "恥骨", "第5~12肋骨外側面"], answer: "腓骨上1/2外側面" },
-{ question: "「腓骨筋(長腓骨筋)」の停止はどれ？", choices: ["内側楔状骨・第1中足骨底", "第1中足骨底・内側楔状骨", "第5~7肋軟骨・剣状突起", "腸骨稜・白線・鼠径靭帯"], answer: "第1中足骨底・内側楔状骨" },
-{ question: "「腹直筋」の起始はどれ？", choices: ["腓骨上1/2外側面", "恥骨", "第5~12肋骨外側面", "腸骨稜・鼠径靭帯・胸腰筋膜"], answer: "恥骨" },
-{ question: "「腹直筋」の停止はどれ？", choices: ["第1中足骨底・内側楔状骨", "第5~7肋軟骨・剣状突起", "腸骨稜・白線・鼠径靭帯", "第10~12肋骨・白線"], answer: "第5~7肋軟骨・剣状突起" },
-{ question: "「外腹斜筋」の起始はどれ？", choices: ["恥骨", "第5~12肋骨外側面", "腸骨稜・鼠径靭帯・胸腰筋膜", "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜"], answer: "第5~12肋骨外側面" },
-{ question: "「外腹斜筋」の停止はどれ？", choices: ["第5~7肋軟骨・剣状突起", "腸骨稜・白線・鼠径靭帯", "第10~12肋骨・白線", "白線・恥骨・腹直筋鞘"], answer: "腸骨稜・白線・鼠径靭帯" },
-{ question: "「内腹斜筋」の起始はどれ？", choices: ["第5~12肋骨外側面", "腸骨稜・鼠径靭帯・胸腰筋膜", "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜", "恥骨"], answer: "腸骨稜・鼠径靭帯・胸腰筋膜" },
-{ question: "「内腹斜筋」の停止はどれ？", choices: ["腸骨稜・白線・鼠径靭帯", "第10~12肋骨・白線", "白線・恥骨・腹直筋鞘", "第5~7肋軟骨・剣状突起"], answer: "第10~12肋骨・白線" },
-{ question: "「腹横筋」の起始はどれ？", choices: ["第5~12肋骨外側面", "腸骨稜・鼠径靭帯・胸腰筋膜", "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜", "恥骨"], answer: "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜" },
-{ question: "「腹横筋」の停止はどれ？", choices: ["腸骨稜・白線・鼠径靭帯", "第10~12肋骨・白線", "白線・恥骨・腹直筋鞘", "第5~7肋軟骨・剣状突起"], answer: "白線・恥骨・腹直筋鞘" }
+{ question: "「大胸筋(鎖骨部)」の起始はどれ？", choices: ["鎖骨内側1/2", "胸骨・第2~6肋軟骨", "腹直筋鞘", "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜"], answer: "鎖骨内側1/2", image: "daikyoukin.jpg" },
+{ question: "「大胸筋(胸肋部)」の起始はどれ？", choices: ["鎖骨内側1/2", "胸骨・第2~6肋軟骨", "腹直筋鞘", "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜"], answer: "胸骨・第2~6肋軟骨", image: "daikyoukin.jpg" },
+{ question: "「大胸筋(腹部)」の起始はどれ？", choices: ["鎖骨内側1/2", "胸骨・第2~6肋軟骨", "腹直筋鞘", "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜"], answer: "腹直筋鞘", image: "daikyoukin.jpg" },
+{ question: "「大胸筋」の停止はどれ？", choices: ["上腕骨大結節稜", "上腕骨小結節稜", "上腕骨三角筋粗面", "鎖骨外側1/3 肩峰・肩甲棘"], answer: "上腕骨大結節稜", image: "daikyoukin.jpg" },
+{ question: "「広背筋」の起始はどれ？", choices: ["鎖骨内側1/2、胸骨・第2~6肋軟骨、腹直筋鞘", "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜、下部肋骨3~4本", "後頭骨・項靭帯・第1~7頸椎棘突起", "長頭:関節下結節、外側頭:上腕骨後面(近位)"], answer: "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜、下部肋骨3~4本", image: "kouhaikin.jpg" },
+{ question: "「広背筋」の停止はどれ？", choices: ["上腕骨大結節稜", "上腕骨小結節稜", "上腕骨三角筋粗面", "尺骨肘頭"], answer: "上腕骨小結節稜", image: "kouhaikin.jpg" },
+{ question: "「三角筋(前部)」の起始はどれ？", choices: ["鎖骨外側1/3", "肩峰", "肩甲棘", "烏口突起"], answer: "鎖骨外側1/3", image: "sankakukin.jpg" },
+{ question: "「三角筋(中部)」の起始はどれ？", choices: ["鎖骨外側1/3", "肩峰", "肩甲棘", "関節上結節"], answer: "肩峰", image: "sankakukin.jpg" },
+{ question: "「三角筋(後部)」の起始はどれ？", choices: ["鎖骨外側1/3", "肩峰", "肩甲棘", "関節下結節"], answer: "肩甲棘", image: "sankakukin.jpg" },
+{ question: "「三角筋」の停止はどれ？", choices: ["上腕骨大結節稜", "上腕骨小結節稜", "上腕骨三角筋粗面", "鎖骨外側1/3 肩峰・肩甲棘"], answer: "上腕骨三角筋粗面", image: "sankakukin.jpg" },
+{ question: "「僧帽筋(上部)」の起始はどれ？", choices: ["後頭骨・項靭帯・第1~7頸椎棘突起", "第1~12胸椎棘突起", "鎖骨外側1/3", "肩峰"], answer: "後頭骨・項靭帯・第1~7頸椎棘突起", image: "souboukin.jpg" },
+{ question: "「僧帽筋(中部・下部)」の起始はどれ？", choices: ["後頭骨・項靭帯・第1~7頸椎棘突起", "第1~12胸椎棘突起", "肩甲棘", "下前腸骨棘"], answer: "第1~12胸椎棘突起", image: "souboukin.jpg" },
+{ question: "「僧帽筋」の停止はどれ？", choices: ["上腕骨三角筋粗面", "鎖骨外側1/3 肩峰・肩甲棘", "橈骨粗面・前腕筋膜", "尺骨肘頭"], answer: "鎖骨外側1/3 肩峰・肩甲棘", image: "souboukin.jpg" },
+{ question: "「上腕二頭筋(短頭)」の起始はどれ？", choices: ["烏口突起", "関節上結節", "関節下結節", "上腕骨後面(近位)"], answer: "烏口突起", image: "jouwannitoukin.jpg" },
+{ question: "「上腕二頭筋(長頭)」の起始はどれ？", choices: ["烏口突起", "関節上結節", "関節下結節", "上腕骨後面(近位)"], answer: "関節上結節", image: "jouwannitoukin.jpg" },
+{ question: "「上腕二頭筋」の停止はどれ？", choices: ["上腕骨三角筋粗面", "鎖骨外側1/3 肩峰・肩甲棘", "橈骨粗面・前腕筋膜", "尺骨肘頭"], answer: "橈骨粗面・前腕筋膜", image: "jouwannitoukin.jpg" },
+{ question: "「上腕三頭筋(長頭)」の起始はどれ？", choices: ["烏口突起", "関節上結節", "関節下結節", "上腕骨後面(近位)"], answer: "関節下結節", image: "jouwansantoukin.jpg" },
+{ question: "「上腕三頭筋(外側頭)」の起始はどれ？", choices: ["関節下結節", "上腕骨後面(近位)", "上腕骨後面(遠位)", "上腕骨前面遠位1/2"], answer: "上腕骨後面(近位)", image: "jouwansantoukin.jpg" },
+{ question: "「上腕三頭筋(内側頭)」の起始はどれ？", choices: ["関節下結節", "上腕骨後面(近位)", "上腕骨後面(遠位)", "上腕骨前面遠位1/2"], answer: "上腕骨後面(遠位)", image: "jouwansantoukin.jpg" },
+{ question: "「上腕三頭筋」の停止はどれ？", choices: ["橈骨粗面・前腕筋膜", "尺骨肘頭", "尺骨粗面", "上腕骨内側面中部"], answer: "尺骨肘頭", image: "jouwansantoukin.jpg" },
+{ question: "「上腕筋」の起始はどれ？", choices: ["上腕骨後面(近位)", "上腕骨前面遠位1/2", "烏口突起", "内側上顆・尺骨・橈骨"], answer: "上腕骨前面遠位1/2", image: "jouwankin.jpg" },
+{ question: "「上腕筋」の停止はどれ？", choices: ["尺骨肘頭", "尺骨粗面", "上腕骨内側面中部", "第2~5指中節骨"], answer: "尺骨粗面", image: "jouwankin.jpg" },
+{ question: "「烏口腕筋」の起始はどれ？", choices: ["上腕骨前面遠位1/2", "烏口突起", "内側上顆・尺骨・橈骨", "上腕骨外側上顆"], answer: "烏口突起", image: "ukouwankin.jpg" },
+{ question: "「烏口腕筋」の停止はどれ？", choices: ["尺骨粗面", "上腕骨内側面中部", "第2~5指中節骨", "第2~5指末節背側"], answer: "上腕骨内側面中部", image: "ukouwankin.jpg" },
+{ question: "「前腕屈筋群(浅指屈筋)」の起始はどれ？", choices: ["烏口突起", "内側上顆・尺骨・橈骨", "上腕骨外側上顆", "下前腸骨棘"], answer: "内側上顆・尺骨・橈骨", image: "senshikuttsukin.jpg" },
+{ question: "「前腕屈筋群(浅指屈筋)」の停止はどれ？", choices: ["上腕骨内側面中部", "第2~5指中節骨", "第2~5指末節背側", "膝蓋骨→脛骨粗面"], answer: "第2~5指中節骨", image: "senshikuttsukin.jpg" },
+{ question: "「前腕伸筋群(総指伸筋)」の起始はどれ？", choices: ["内側上顆・尺骨・橈骨", "上腕骨外側上顆", "下前腸骨棘", "大転子・転子間線"], answer: "上腕骨外側上顆", image: "soushishinkin.jpg" },
+{ question: "「前腕伸筋群(総指伸筋)」の停止はどれ？", choices: ["第2~5指中節骨", "第2~5指末節背側", "膝蓋骨→脛骨粗面", "腓骨頭"], answer: "第2~5指末節背側", image: "soushishinkin.jpg" },
+{ question: "「大腿四頭筋(大腿直筋)」の起始はどれ？", choices: ["上腕骨外側上顆", "下前腸骨棘", "大転子・転子間線", "大腿骨内側面"], answer: "下前腸骨棘", image: "daitaichokkkin.jpg" },
+{ question: "「大腿四頭筋(大腿直筋)」の停止はどれ？", choices: ["第2~5指末節背側", "膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側後面"], answer: "膝蓋骨→脛骨粗面", image: "daitaichokkkin.jpg" },
+{ question: "「大腿四頭筋(外側広筋)」の起始はどれ？", choices: ["下前腸骨棘", "大転子・転子間線", "大腿骨内側面", "大腿骨前外側面"], answer: "大転子・転子間線", image: "gaisokukoukin.jpg" },
+{ question: "「大腿四頭筋(外側広筋)」の停止はどれ？", choices: ["膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側後面", "脛骨内側前面(鵞足)"], answer: "膝蓋骨→脛骨粗面", image: "gaisokukoukin.jpg" },
+{ question: "「大腿四頭筋(内側広筋)」の起始はどれ？", choices: ["大転子・転子間線", "大腿骨内側面", "大腿骨前外側面", "坐骨結節"], answer: "大腿骨内側面", image: "naisokukoukin.jpg" },
+{ question: "「大腿四頭筋(内側広筋)」の停止はどれ？", choices: ["膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側後面", "大腿骨殿筋粗面・腸脛靭帯"], answer: "膝蓋骨→脛骨粗面", image: "naisokukoukin.jpg" },
+{ question: "「大腿四頭筋(中間広筋)」の起始はどれ？", choices: ["大腿骨内側面", "大腿骨前外側面", "坐骨結節", "大腿骨粗線"], answer: "大腿骨前外側面", image: "chuukankoukin.jpg" },
+{ question: "「大腿四頭筋(中間広筋)」の停止はどれ？", choices: ["膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側前面(鵞足)", "大転子"], answer: "膝蓋骨→脛骨粗面", image: "chuukankoukin.jpg" },
+{ question: "「ハムストリング(大腿二頭筋・長頭)」の起始はどれ？", choices: ["大腿骨前外側面", "坐骨結節", "大腿骨粗線", "腸骨稜・仙骨・尾骨・仙結節靭帯"], answer: "坐骨結節", image: "daitainitoukin.jpg" },
+{ question: "「ハムストリング(大腿二頭筋・短頭)」の起始はどれ？", choices: ["坐骨結節", "大腿骨粗線", "腸骨稜・仙骨・尾骨・仙結節靭帯", "腸骨外側面"], answer: "大腿骨粗線", image: "daitainitoukin.jpg" },
+{ question: "「ハムストリング(大腿二頭筋)」の停止はどれ？", choices: ["膝蓋骨→脛骨粗面", "腓骨頭", "脛骨内側後面", "脛骨内側前面(鵞足)"], answer: "腓骨頭", image: "daitainitoukin.jpg" },
+{ question: "「ハムストリング(半膜様筋)」の起始はどれ？", choices: ["坐骨結節", "大腿骨粗線", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節"], answer: "坐骨結節", image: "hanmakuyoukin.jpg" },
+{ question: "「ハムストリング(半膜様筋)」の停止はどれ？", choices: ["腓骨頭", "脛骨内側後面", "脛骨内側前面(鵞足)", "大腿骨殿筋粗面・腸脛靭帯"], answer: "脛骨内側後面", image: "hanmakuyoukin.jpg" },
+{ question: "「ハムストリング(半腱様筋)」の起始はどれ？", choices: ["坐骨結節", "大腿骨粗線", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節"], answer: "坐骨結節", image: "hankenyoukin.jpg" },
+{ question: "「ハムストリング(半腱様筋)」の停止はどれ？", choices: ["脛骨内側後面", "脛骨内側前面(鵞足)", "大腿骨殿筋粗面・腸脛靭帯", "大転子"], answer: "脛骨内側前面(鵞足)", image: "hankenyoukin.jpg" },
+{ question: "「大臀筋」の起始はどれ？", choices: ["坐骨結節", "腸骨稜・仙骨・尾骨・仙結節靭帯", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節"], answer: "腸骨稜・仙骨・尾骨・仙結節靭帯", image: "daidenkin.jpg" },
+{ question: "「大臀筋」の停止はどれ？", choices: ["脛骨内側前面(鵞足)", "大腿骨殿筋粗面・腸脛靭帯", "大転子", "大転子前面"], answer: "大腿骨殿筋粗面・腸脛靭帯", image: "daidenkin.jpg" },
+{ question: "「中臀筋」の起始はどれ？", choices: ["腸骨稜・仙骨・尾骨・仙結節靭帯", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節", "上前腸骨棘"], answer: "腸骨外側面", image: "chuudenkin.jpg" },
+{ question: "「中臀筋」の停止はどれ？", choices: ["大腿骨殿筋粗面・腸脛靭帯", "大転子", "大転子前面", "大腿骨粗線・内転筋結節"], answer: "大転子", image: "chuudenkin.jpg" },
+{ question: "「小臀筋」の起始はどれ？", choices: ["腸骨稜・仙骨・尾骨・仙結節靭帯", "腸骨外側面", "恥骨枝・坐骨枝・坐骨結節", "大腿骨内外側上顆"], answer: "腸骨外側面", image: "shoudenkin.jpg" },
+{ question: "「小臀筋」の停止はどれ？", choices: ["大転子", "大転子前面", "大腿骨粗線・内転筋結節", "脛骨内側前面(鵞足)"], answer: "大転子前面", image: "shoudenkin.jpg" },
+{ question: "「内転筋群(大内転筋)」の起始はどれ？", choices: ["腸骨外側面", "恥骨枝・坐骨枝・坐骨結節", "上前腸骨棘", "大腿骨内外側上顆"], answer: "恥骨枝・坐骨枝・坐骨結節", image: "dainaitenkin.jpg" },
+{ question: "「内転筋群(大内転筋)」の停止はどれ？", choices: ["大転子前面", "大腿骨粗線・内転筋結節", "脛骨内側前面(鵞足)", "踵骨隆起(アキレス腱)"], answer: "大腿骨粗線・内転筋結節", image: "dainaitenkin.jpg" },
+{ question: "「縫工筋」の起始はどれ？", choices: ["恥骨枝・坐骨枝・坐骨結節", "上前腸骨棘", "大腿骨内外側上顆", "腓骨頭・脛骨ヒラメ筋線"], answer: "上前腸骨棘", image: "houkoukin.jpg" },
+{ question: "「縫工筋」の停止はどれ？", choices: ["大腿骨粗線・内転筋結節", "脛骨内側前面(鵞足)", "踵骨隆起(アキレス腱)", "内側楔状骨・第1中足骨底"], answer: "脛骨内側前面(鵞足)", image: "houkoukin.jpg" },
+{ question: "「腓腹筋」の起始はどれ？", choices: ["上前腸骨棘", "大腿骨内外側上顆", "腓骨頭・脛骨ヒラメ筋線", "脛骨外側面・骨間膜"], answer: "大腿骨内外側上顆", image: "hifukukin.jpg" },
+{ question: "「腓腹筋」の停止はどれ？", choices: ["脛骨内側前面(鵞足)", "踵骨隆起(アキレス腱)", "内側楔状骨・第1中足骨底", "第1中足骨底・内側楔状骨"], answer: "踵骨隆起(アキレス腱)", image: "hifukukin.jpg" },
+{ question: "「ヒラメ筋」の起始はどれ？", choices: ["大腿骨内外側上顆", "腓骨頭・脛骨ヒラメ筋線", "脛骨外側面・骨間膜", "腓骨上1/2外側面"], answer: "腓骨頭・脛骨ヒラメ筋線", image: "hiramekin.jpg" },
+{ question: "「ヒラメ筋」の停止はどれ？", choices: ["踵骨隆起(アキレス腱)", "内側楔状骨・第1中足骨底", "第1中足骨底・内側楔状骨", "第5~7肋軟骨・剣状突起"], answer: "踵骨隆起(アキレス腱)", image: "hiramekin.jpg" },
+{ question: "「前脛骨筋」の起始はどれ？", choices: ["腓骨頭・脛骨ヒラメ筋線", "脛骨外側面・骨間膜", "腓骨上1/2外側面", "恥骨"], answer: "脛骨外側面・骨間膜", image: "zenkeikotsukin.jpg" },
+{ question: "「前脛骨筋」の停止はどれ？", choices: ["踵骨隆起(アキレス腱)", "内側楔状骨・第1中足骨底", "第1中足骨底・内側楔状骨", "第5~7肋軟骨・剣状突起"], answer: "内側楔状骨・第1中足骨底", image: "zenkeikotsukin.jpg" },
+{ question: "「腓骨筋(長腓骨筋)」の起始はどれ？", choices: ["脛骨外側面・骨間膜", "腓骨上1/2外側面", "恥骨", "第5~12肋骨外側面"], answer: "腓骨上1/2外側面", image: "chouhikotsukin.jpg" },
+{ question: "「腓骨筋(長腓骨筋)」の停止はどれ？", choices: ["内側楔状骨・第1中足骨底", "第1中足骨底・内側楔状骨", "第5~7肋軟骨・剣状突起", "腸骨稜・白線・鼠径靭帯"], answer: "第1中足骨底・内側楔状骨", image: "chouhikotsukin.jpg" },
+{ question: "「腹直筋」の起始はどれ？", choices: ["腓骨上1/2外側面", "恥骨", "第5~12肋骨外側面", "腸骨稜・鼠径靭帯・胸腰筋膜"], answer: "恥骨", image: "fukuchokukin.jpg" },
+{ question: "「腹直筋」の停止はどれ？", choices: ["第1中足骨底・内側楔状骨", "第5~7肋軟骨・剣状突起", "腸骨稜・白線・鼠径靭帯", "第10~12肋骨・白線"], answer: "第5~7肋軟骨・剣状突起", image: "fukuchokukin.jpg" },
+{ question: "「外腹斜筋」の起始はどれ？", choices: ["恥骨", "第5~12肋骨外側面", "腸骨稜・鼠径靭帯・胸腰筋膜", "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜"], answer: "第5~12肋骨外側面", image: "gaifukushakin.jpg" },
+{ question: "「外腹斜筋」の停止はどれ？", choices: ["第5~7肋軟骨・剣状突起", "腸骨稜・白線・鼠径靭帯", "第10~12肋骨・白線", "白線・恥骨・腹直筋鞘"], answer: "腸骨稜・白線・鼠径靭帯", image: "gaifukushakin.jpg" },
+{ question: "「内腹斜筋」の起始はどれ？", choices: ["第5~12肋骨外側面", "腸骨稜・鼠径靭帯・胸腰筋膜", "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜", "恥骨"], answer: "腸骨稜・鼠径靭帯・胸腰筋膜", image: "naifukushakin.jpg" },
+{ question: "「内腹斜筋」の停止はどれ？", choices: ["腸骨稜・白線・鼠径靭帯", "第10~12肋骨・白線", "白線・恥骨・腹直筋鞘", "第5~7肋軟骨・剣状突起"], answer: "第10~12肋骨・白線", image: "naifukushakin.jpg" },
+{ question: "「腹横筋」の起始はどれ？", choices: ["第5~12肋骨外側面", "腸骨稜・鼠径靭帯・胸腰筋膜", "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜", "恥骨"], answer: "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜", image: "fukuoukin.jpg" },
+{ question: "「腹横筋」の停止はどれ？", choices: ["腸骨稜・白線・鼠径靭帯", "第10~12肋骨・白線", "白線・恥骨・腹直筋鞘", "第5~7肋軟骨・剣状突起"], answer: "白線・恥骨・腹直筋鞘", image: "fukuoukin.jpg" }
 ];
 
 let currentQuestionIndex = 0;
@@ -151,6 +158,7 @@ document.getElementById("start-btn").addEventListener("click", function() {
 document.getElementById("start-screen").style.display = "none";
 document.getElementById("quiz-screen").style.display = "block";
 document.getElementById("logo-container").style.display = "block";
+document.getElementById("muscle-img-wrapper").style.display = "block";
 currentQuestionIndex = 0;
 userAnswers = new Array(quizData.length).fill(null);
 isAnimating = false;
@@ -182,6 +190,15 @@ isAnimating = false;
 function loadQuestion() {
 const currentQuiz = quizData[currentQuestionIndex];
 document.getElementById("question-text").textContent = "Q" + (currentQuestionIndex + 1) + ". " + currentQuiz.question;
+
+const muscleImg = document.getElementById("muscle-img");
+if (currentQuiz.image) {
+muscleImg.src = currentQuiz.image;
+muscleImg.style.display = "block";
+} else {
+muscleImg.style.display = "none";
+}
+
 const choicesContainer = document.getElementById("choices-container");
 choicesContainer.innerHTML = "";
 
@@ -236,6 +253,7 @@ isAnimating = false;
 function showResult() {
 document.getElementById("quiz-screen").style.display = "none";
 document.getElementById("logo-container").style.display = "none";
+document.getElementById("muscle-img-wrapper").style.display = "none";
 document.getElementById("result-screen").style.display = "block";
 let score = 0;
 userAnswers.forEach(function(ans, index) {
