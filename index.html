@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>主要筋肉の起始・停止フラッシュカード(フリガナ対応・PNG版)</title>
+<title>主要筋肉の起始・停止フラッシュカード</title>
 <style>
 body { font-family: sans-serif; background-color: #f0f7f4; color: #333; margin: 0; padding: 20px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
 #app-wrapper { width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; }
@@ -12,22 +12,20 @@ h1 { font-size: 20px; color: #02693E; margin-bottom: 10px; text-align: center; }
 .subtitle { font-size: 14px; color: #666; margin-bottom: 20px; text-align: center; font-weight: bold; }
 #muscle-img-wrapper { width: 100%; max-width: 400px; margin-bottom: 15px; display: none; }
 #muscle-img { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); background-color: #fff; }
-#quiz-container { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; box-sizing: border-box; touch-action: pan-y; min-height: 250px; display: flex; flex-direction: column; justify-content: space-between; }
-.question { font-size: 18px; font-weight: bold; margin-bottom: 20px; text-align: center; line-height: 1.4; color: #02693E; }
-#furigana-container { display: none; font-size: 14px; color: #888; margin-bottom: 5px; text-align: center; line-height: 1.2; }
-#answer-container { display: none; font-size: 22px; font-weight: bold; color: #ef4444; margin-bottom: 20px; text-align: center; line-height: 1.4; }
+#quiz-container { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; box-sizing: border-box; touch-action: pan-y; min-height: 300px; display: flex; flex-direction: column; justify-content: center; }
+.question { font-size: 24px; font-weight: bold; margin-bottom: 20px; text-align: center; line-height: 1.4; color: #02693E; }
+#furigana-container { display: none; font-size: 16px; color: #888; margin-bottom: 10px; text-align: center; line-height: 1.2; }
+#answer-container { display: none; font-size: 28px; font-weight: bold; color: #ef4444; margin-bottom: 20px; text-align: center; line-height: 1.4; }
 .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s; box-sizing: border-box; }
 .btn:active { opacity: 0.8; }
-.nav-container { display: flex; justify-content: space-between; margin-top: auto; gap: 10px; }
-.nav-btn { flex: 1; padding: 12px; background-color: #02693E; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; transition: 0.2s; }
-.nav-btn:active { background-color: #014d2d; }
-.nav-btn:disabled { background-color: #81b49e; cursor: not-allowed; }
-#result-screen, #quiz-screen, #logo-container { display: none; text-align: center; }
-#start-screen { display: block; text-align: center; }
+#result-screen, #logo-container { display: none; text-align: center; }
+#start-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; }
+#quiz-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 250px; cursor: pointer; user-select: none; }
+.tap-guide { font-size: 13px; color: #aaa; margin-top: 30px; text-align: center; }
 #logo-container { margin-top: 20px; text-align: center; width: 100%; }
 #logo-container img { max-width: 150px; height: auto; opacity: 0.8; }
 .start-logo { max-width: 200px; height: auto; margin-bottom: 20px; }
-#progress-text { font-size: 14px; color: #666; text-align: right; margin-bottom: 10px; font-weight: bold; }
+#progress-text { font-size: 14px; color: #666; text-align: right; width: 100%; margin-bottom: 15px; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -52,10 +50,7 @@ h1 { font-size: 20px; color: #02693E; margin-bottom: 10px; text-align: center; }
 <div id="question-text" class="question"></div>
 <div id="furigana-container"></div>
 <div id="answer-container"></div>
-<div class="nav-container">
-<button id="prev-btn" class="nav-btn">戻る</button>
-<button id="next-btn" class="nav-btn">答えを見る</button>
-</div>
+<div class="tap-guide">画面をタップ、または左右にスワイプ</div>
 </div>
 
 <div id="result-screen">
@@ -80,101 +75,122 @@ document.getElementById('start-logo-img').addEventListener('error', function() {
 document.getElementById('footer-logo-img').addEventListener('error', function() { this.style.display='none'; });
 
 const quizData = [
-{ question: "「大胸筋(鎖骨部)」の起始はどれ？", answer: "鎖骨内側1/2", furigana: "さこつないそく", image: "daikyoukin.png" },
-{ question: "「大胸筋(胸肋部)」の起始はどれ？", answer: "胸骨・第2~6肋軟骨", furigana: "きょうこつ・だい2〜6ろくなんこつ", image: "daikyoukin.png" },
-{ question: "「大胸筋(腹部)」の起始はどれ？", answer: "腹直筋鞘", furigana: "ふくちょくきんしょう", image: "daikyoukin.png" },
-{ question: "「大胸筋」の停止はどれ？", answer: "上腕骨大結節稜", furigana: "じょうわんこつだいけっせつりょう", image: "daikyoukin.png" },
-{ question: "「広背筋」の起始はどれ？", answer: "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜、下部肋骨3~4本", furigana: "だい6〜12きょうついきょくとっき、ようつい・せんこつ・ちょうこつりょう、かぶろっこつ", image: "kouhaikin.png" },
-{ question: "「広背筋」の停止はどれ？", answer: "上腕骨小結節稜", furigana: "じょうわんこつしょうけっせつりょう", image: "kouhaikin.png" },
-{ question: "「三角筋(前部)」の起始はどれ？", answer: "鎖骨外側1/3", furigana: "さこつがいそく", image: "sankakukin.png" },
-{ question: "「三角筋(中部)」の起始はどれ？", answer: "肩峰", furigana: "けんぽう", image: "sankakukin.png" },
-{ question: "「三角筋(後部)」の起始はどれ？", answer: "肩甲棘", furigana: "けんこうきょく", image: "sankakukin.png" },
-{ question: "「三角筋」の停止はどれ？", answer: "上腕骨三角筋粗面", furigana: "じょうわんこつさんかくきんそめん", image: "sankakukin.png" },
-{ question: "「僧帽筋(上部)」の起始はどれ？", answer: "後頭骨・項靭帯・第1~7頸椎棘突起", furigana: "こうとうこつ・こうじんたい・だい1〜7けいついきょくとっき", image: "souboukin.png" },
-{ question: "「僧帽筋(中部・下部)」の起始はどれ？", answer: "第1~12胸椎棘突起", furigana: "だい1〜12きょうついきょくとっき", image: "souboukin.png" },
-{ question: "「僧帽筋」の停止はどれ？", answer: "鎖骨外側1/3 肩峰・肩甲棘", furigana: "さこつがいそく けんぽう・けんこうきょく", image: "souboukin.png" },
-{ question: "「上腕二頭筋(短頭)」の起始はどれ？", answer: "烏口突起", furigana: "うこうとっき", image: "jouwannitoukin.png" },
-{ question: "「上腕二頭筋(長頭)」の起始はどれ？", answer: "関節上結節", furigana: "かんせつじょうけっせつ", image: "jouwannitoukin.png" },
-{ question: "「上腕二頭筋」の停止はどれ？", answer: "橈骨粗面・前腕筋膜", furigana: "とうこつそめん・ぜんわんきんまく", image: "jouwannitoukin.png" },
-{ question: "「上腕三頭筋(長頭)」の起始はどれ？", answer: "関節下結節", furigana: "かんせつかけっせつ", image: "jouwansantoukin.png" },
-{ question: "「上腕三頭筋(外側頭)」の起始はどれ？", answer: "上腕骨後面(近位)", furigana: "じょうわんこつこうめん (きんい)", image: "jouwansantoukin.png" },
-{ question: "「上腕三頭筋(内側頭)」の起始はどれ？", answer: "上腕骨後面(遠位)", furigana: "じょうわんこつこうめん (えんい)", image: "jouwansantoukin.png" },
-{ question: "「上腕三頭筋」の停止はどれ？", answer: "尺骨肘頭", furigana: "しゃっこつちゅうとう", image: "jouwansantoukin.png" },
-{ question: "「上腕筋」の起始はどれ？", answer: "上腕骨前面遠位1/2", furigana: "じょうわんこつぜんめんえんい", image: "jouwankin.png" },
-{ question: "「上腕筋」の停止はどれ？", answer: "尺骨粗面", furigana: "しゃっこつそめん", image: "jouwankin.png" },
-{ question: "「烏口腕筋」の起始はどれ？", answer: "烏口突起", furigana: "うこうとっき", image: "ukouwankin.png" },
-{ question: "「烏口腕筋」の停止はどれ？", answer: "上腕骨内側面中部", furigana: "じょうわんこつないそくめんちゅうぶ", image: "ukouwankin.png" },
-{ question: "「前腕屈筋群(浅指屈筋)」の起始はどれ？", answer: "内側上顆・尺骨・橈骨", furigana: "ないそくじょうか・しゃっこつ・とうこつ", image: "senshikuttsukin.png" },
-{ question: "「前腕屈筋群(浅指屈筋)」の停止はどれ？", answer: "第2~5指中節骨", furigana: "だい2〜5しちゅうせつこつ", image: "senshikuttsukin.png" },
-{ question: "「前腕伸筋群(総指伸筋)」の起始はどれ？", answer: "上腕骨外側上顆", furigana: "じょうわんこつがいそくじょうか", image: "soushishinkin.png" },
-{ question: "「前腕伸筋群(総指伸筋)」の停止はどれ？", answer: "第2~5指末節背側", furigana: "だい2〜5しまっせつはいそく", image: "soushishinkin.png" },
-{ question: "「大腿四頭筋(大腿直筋)」の起始はどれ？", answer: "下前腸骨棘", furigana: "かぜんちょうこつきょく", image: "daitaichokkkin.png" },
-{ question: "「大腿四頭筋(大腿直筋)」の停止はどれ？", answer: "膝蓋骨→脛骨粗面", furigana: "しつがいこつ → けいこつそめん", image: "daitaichokkkin.png" },
-{ question: "「大腿四頭筋(外側広筋)」の起始はどれ？", answer: "大転子・転子間線", furigana: "だいてんし・てんしかんせん", image: "gaisokukoukin.png" },
-{ question: "「大腿四頭筋(外側広筋)」の停止はどれ？", answer: "膝蓋骨→脛骨粗面", furigana: "しつがいこつ → けいこつそめん", image: "gaisokukoukin.png" },
-{ question: "「大腿四頭筋(内側広筋)」の起始はどれ？", answer: "大腿骨内側面", furigana: "だいたいこつないそくめん", image: "naisokukoukin.png" },
-{ question: "「大腿四頭筋(内側広筋)」の停止はどれ？", answer: "膝蓋骨→脛骨粗面", furigana: "しつがいこつ → けいこつそめん", image: "naisokukoukin.png" },
-{ question: "「大腿四頭筋(中間広筋)」の起始はどれ？", answer: "大腿骨前外側面", furigana: "だいたいこつぜんがいそくめん", image: "chuukankoukin.png" },
-{ question: "「大腿四頭筋(中間広筋)」の停止はどれ？", answer: "膝蓋骨→脛骨粗面", furigana: "しつがいこつ → けいこつそめん", image: "chuukankoukin.png" },
-{ question: "「ハムストリング(大腿二頭筋・長頭)」の起始はどれ？", answer: "坐骨結節", furigana: "ざこつけっせつ", image: "daitainitoukin.png" },
-{ question: "「ハムストリング(大腿二頭筋・短頭)」の起始はどれ？", answer: "大腿骨粗線", furigana: "だいたいこつそせん", image: "daitainitoukin.png" },
-{ question: "「ハムストリング(大腿二頭筋)」の停止はどれ？", answer: "腓骨頭", furigana: "ひこつとう", image: "daitainitoukin.png" },
-{ question: "「ハムストリング(半膜様筋)」の起始はどれ？", answer: "坐骨結節", furigana: "ざこつけっせつ", image: "hanmakuyoukin.png" },
-{ question: "「ハムストリング(半膜様筋)」の停止はどれ？", answer: "脛骨内側後面", furigana: "けいこつないそくこうめん", image: "hanmakuyoukin.png" },
-{ question: "「ハムストリング(半腱様筋)」の起始はどれ？", answer: "坐骨結節", furigana: "ざこつけっせつ", image: "hankenyoukin.png" },
-{ question: "「ハムストリング(半腱様筋)」の停止はどれ？", answer: "脛骨内側前面(鵞足)", furigana: "けいこつないそくぜんめん (がそく)", image: "hankenyoukin.png" },
-{ question: "「大臀筋」の起始はどれ？", answer: "腸骨稜・仙骨・尾骨・仙結節靭帯", furigana: "ちょうこつりょう・せんこつ・びこつ・せんけっせつじんたい", image: "daidenkin.png" },
-{ question: "「大臀筋」の停止はどれ？", answer: "大腿骨殿筋粗面・腸脛靭帯", furigana: "だいたいこつでんきんそめん・ちょうけいじんたい", image: "daidenkin.png" },
-{ question: "「中臀筋」の起始はどれ？", answer: "腸骨外側面", furigana: "ちょうこつがいそくめん", image: "chuudenkin.png" },
-{ question: "「中臀筋」の停止はどれ？", answer: "大転子", furigana: "だいてんし", image: "chuudenkin.png" },
-{ question: "「小臀筋」の起始はどれ？", answer: "腸骨外側面", furigana: "ちょうこつがいそくめん", image: "shoudenkin.png" },
-{ question: "「小臀筋」の停止はどれ？", answer: "大転子前面", furigana: "だいてんしぜんめん", image: "shoudenkin.png" },
-{ question: "「内転筋群(大内転筋)」の起始はどれ？", answer: "恥骨枝・坐骨枝・坐骨結節", furigana: "ちこつし・ざこつし・ざこつけっせつ", image: "dainaitenkin.png" },
-{ question: "「内転筋群(大内転筋)」の停止はどれ？", answer: "大腿骨粗線・内転筋結節", furigana: "だいたいこつそせん・ないてんきんけっせつ", image: "dainaitenkin.png" },
-{ question: "「縫工筋」の起始はどれ？", answer: "上前腸骨棘", furigana: "じょうぜんちょうこつきょく", image: "houkoukin.png" },
-{ question: "「縫工筋」の停止はどれ？", answer: "脛骨内側前面(鵞足)", furigana: "けいこつないそくぜんめん (がそく)", image: "houkoukin.png" },
-{ question: "「腓腹筋」の起始はどれ？", answer: "大腿骨内外側上顆", furigana: "だいたいこつないがいそくじょうか", image: "hifukukin.png" },
-{ question: "「腓腹筋」の停止はどれ？", answer: "踵骨隆起(アキレス腱)", furigana: "しょうこつりゅうき (あきれすけん)", image: "hifukukin.png" },
-{ question: "「ヒラメ筋」の起始はどれ？", answer: "腓骨頭・脛骨ヒラメ筋線", furigana: "ひこつとう・けいこつひらめきんせん", image: "hiramekin.png" },
-{ question: "「ヒラメ筋」の停止はどれ？", answer: "踵骨隆起(アキレス腱)", furigana: "しょうこつりゅうき (あきれすけん)", image: "hiramekin.png" },
-{ question: "「前脛骨筋」の起始はどれ？", answer: "脛骨外側面・骨間膜", furigana: "けいこつがいそくめん・こっかんまく", image: "zenkeikotsukin.png" },
-{ question: "「前脛骨筋」の停止はどれ？", answer: "内側楔状骨・第1中足骨底", furigana: "ないそくけつじょうこつ・だい1ちゅうそっこつてい", image: "zenkeikotsukin.png" },
-{ question: "「腓骨筋(長腓骨筋)」の起始はどれ？", answer: "腓骨上1/2外側面", furigana: "ひこつじょう 1/2 がいそくめん", image: "chouhikotsukin.png" },
-{ question: "「腓骨筋(長腓骨筋)」の停止はどれ？", answer: "第1中足骨底・内側楔状骨", furigana: "だい1ちゅうそっこつてい・ないそくけつじょうこつ", image: "chouhikotsukin.png" },
-{ question: "「腹直筋」の起始はどれ？", answer: "恥骨", furigana: "ちこつ", image: "fukuchokukin.png" },
-{ question: "「腹直筋」の停止はどれ？", answer: "第5~7肋軟骨・剣状突起", furigana: "だい5〜7ろくなんこつ・けんじょうとっき", image: "fukuchokukin.png" },
-{ question: "「外腹斜筋」の起始はどれ？", answer: "第5~12肋骨外側面", furigana: "だい5〜12ろっこつがいそくめん", image: "gaifukushakin.png" },
-{ question: "「外腹斜筋」の停止はどれ？", answer: "腸骨稜・白線・鼠径靭帯", furigana: "ちょうこつりょう・はくせん・そけいじんたい", image: "gaifukushakin.png" },
-{ question: "「内腹斜筋」の起始はどれ？", answer: "腸骨稜・鼠径靭帯・胸腰筋膜", furigana: "ちょうこつりょう・そけいじんたい・きょうようきんまく", image: "naifukushakin.png" },
-{ question: "「内腹斜筋」の停止はどれ？", answer: "第10~12肋骨・白線", furigana: "だい10〜12ろっこつ・はくせん", image: "naifukushakin.png" },
-{ question: "「腹横筋」の起始はどれ？", answer: "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜", furigana: "だい7〜12ろくなんこつ・ちょうこつりょう・そけいじんたい・きょうようきんまく", image: "fukuoukin.png" },
-{ question: "「腹横筋」の停止はどれ？", answer: "白線・恥骨・腹直筋鞘", furigana: "はくせん・ちこつ・ふくちょくきんしょう", image: "fukuoukin.png" }
+{ question: "「大胸筋(鎖骨部)」の起始は？", answer: "鎖骨内側1/2", furigana: "さこつないそく", image: "daikyoukin.png" },
+{ question: "「大胸筋(胸肋部)」の起始は？", answer: "胸骨・第2~6肋軟骨", furigana: "きょうこつ・だい2〜6ろくなんこつ", image: "daikyoukin.png" },
+{ question: "「大胸筋(腹部)」の起始は？", answer: "腹直筋鞘", furigana: "ふくちょくきんしょう", image: "daikyoukin.png" },
+{ question: "「大胸筋」の停止は？", answer: "上腕骨大結節稜", furigana: "じょうわんこつだいけっせつりょう", image: "daikyoukin.png" },
+{ question: "「広背筋」の起始は？", answer: "第6~12胸椎棘突起、腰椎・仙骨・腸骨稜、下部肋骨3~4本", furigana: "だい6〜12きょうついきょくとっき、ようつい・せんこつ・ちょうこつりょう、かぶろっこつ", image: "kouhaikin.png" },
+{ question: "「広背筋」の停止は？", answer: "上腕骨小結節稜", furigana: "じょうわんこつしょうけっせつりょう", image: "kouhaikin.png" },
+{ question: "「三角筋(前部)」の起始は？", answer: "鎖骨外側1/3", furigana: "さこつがいそく", image: "sankakukin.png" },
+{ question: "「三角筋(中部)」の起始は？", answer: "肩峰", furigana: "けんぽう", image: "sankakukin.png" },
+{ question: "「三角筋(後部)」の起始は？", answer: "肩甲棘", furigana: "けんこうきょく", image: "sankakukin.png" },
+{ question: "「三角筋」の停止は？", answer: "上腕骨三角筋粗面", furigana: "じょうわんこつさんかくきんそめん", image: "sankakukin.png" },
+{ question: "「僧帽筋(上部)」の起始は？", answer: "後頭骨・項靭帯・第1~7頸椎棘突起", furigana: "こうとうこつ・こうじんたい・だい1〜7けいついきょくとっき", image: "souboukin.png" },
+{ question: "「僧帽筋(中部・下部)」の起始は？", answer: "第1~12胸椎棘突起", furigana: "だい1〜12きょうついきょくとっき", image: "souboukin.png" },
+{ question: "「僧帽筋」の停止は？", answer: "鎖骨外側1/3 肩峰・肩甲棘", furigana: "さこつがいそく けんぽう・けんこうきょく", image: "souboukin.png" },
+{ question: "「上腕二頭筋(短頭)」の起始は？", answer: "烏口突起", furigana: "うこうとっき", image: "jouwannitoukin.png" },
+{ question: "「上腕二頭筋(長頭)」の起始は？", answer: "関節上結節", furigana: "かんせつじょうけっせつ", image: "jouwannitoukin.png" },
+{ question: "「上腕二頭筋」の停止は？", answer: "橈骨粗面・前腕筋膜", furigana: "とうこつそめん・ぜんわんきんまく", image: "jouwannitoukin.png" },
+{ question: "「上腕三頭筋(長頭)」の起始は？", answer: "関節下結節", furigana: "かんせつかけっせつ", image: "jouwansantoukin.png" },
+{ question: "「上腕三頭筋(外側頭)」の起始は？", answer: "上腕骨後面(近位)", furigana: "じょうわんこつこうめん (きんい)", image: "jouwansantoukin.png" },
+{ question: "「上腕三頭筋(内側頭)」の起始は？", answer: "上腕骨後面(遠位)", furigana: "じょうわんこつこうめん (えんい)", image: "jouwansantoukin.png" },
+{ question: "「上腕三頭筋」の停止は？", answer: "尺骨肘頭", furigana: "しゃっこつちゅうとう", image: "jouwansantoukin.png" },
+{ question: "「上腕筋」の起始は？", answer: "上腕骨前面遠位1/2", furigana: "じょうわんこつぜんめんえんい", image: "jouwankin.png" },
+{ question: "「上腕筋」の停止は？", answer: "尺骨粗面", furigana: "しゃっこつそめん", image: "jouwankin.png" },
+{ question: "「烏口腕筋」の起始は？", answer: "烏口突起", furigana: "うこうとっき", image: "ukouwankin.png" },
+{ question: "「烏口腕筋」の停止は？", answer: "上腕骨内側面中部", furigana: "じょうわんこつないそくめんちゅうぶ", image: "ukouwankin.png" },
+{ question: "「前腕屈筋群(浅指屈筋)」の起始は？", answer: "内側上顆・尺骨・橈骨", furigana: "ないそくじょうか・しゃっこつ・とうこつ", image: "senshikuttsukin.png" },
+{ question: "「前腕屈筋群(浅指屈筋)」の停止は？", answer: "第2~5指中節骨", furigana: "だい2〜5しちゅうせつこつ", image: "senshikuttsukin.png" },
+{ question: "「前腕伸筋群(総指伸筋)」の起始は？", answer: "上腕骨外側上顆", furigana: "じょうわんこつがいそくじょうか", image: "soushishinkin.png" },
+{ question: "「前腕伸筋群(総指伸筋)」の停止は？", answer: "第2~5指末節背側", furigana: "だい2〜5しまっせつはいそく", image: "soushishinkin.png" },
+{ question: "「大腿四頭筋(大腿直筋)」の起始は？", answer: "下前腸骨棘", furigana: "かぜんちょうこつきょく", image: "daitaichokkkin.png" },
+{ question: "「大腿四頭筋(大腿直筋)」の停止は？", answer: "膝蓋骨→脛骨粗面", furigana: "しつがいこつ → けいこつそめん", image: "daitaichokkkin.png" },
+{ question: "「大腿四頭筋(外側広筋)」の起始は？", answer: "大転子・転子間線", furigana: "だいてんし・てんしかんせん", image: "gaisokukoukin.png" },
+{ question: "「大腿四頭筋(外側広筋)」の停止は？", answer: "膝蓋骨→脛骨粗面", furigana: "しつがいこつ → けいこつそめん", image: "gaisokukoukin.png" },
+{ question: "「大腿四頭筋(内側広筋)」の起始は？", answer: "大腿骨内側面", furigana: "だいたいこつないそくめん", image: "naisokukoukin.png" },
+{ question: "「大腿四頭筋(内側広筋)」の停止は？", answer: "膝蓋骨→脛骨粗面", furigana: "しつがいこつ → けいこつそめん", image: "naisokukoukin.png" },
+{ question: "「大腿四頭筋(中間広筋)」の起始は？", answer: "大腿骨前外側面", furigana: "だいたいこつぜんがいそくめん", image: "chuukankoukin.png" },
+{ question: "「大腿四頭筋(中間広筋)」の停止は？", answer: "膝蓋骨→脛骨粗面", furigana: "しつがいこつ → けいこつそめん", image: "chuukankoukin.png" },
+{ question: "「ハムストリング(大腿二頭筋・長頭)」の起始は？", answer: "坐骨結節", furigana: "ざこつけっせつ", image: "daitainitoukin.png" },
+{ question: "「ハムストリング(大腿二頭筋・短頭)」の起始は？", answer: "大腿骨粗線", furigana: "だいたいこつそせん", image: "daitainitoukin.png" },
+{ question: "「ハムストリング(大腿二頭筋)」の停止は？", answer: "腓骨頭", furigana: "ひこつとう", image: "daitainitoukin.png" },
+{ question: "「ハムストリング(半膜様筋)」の起始は？", answer: "坐骨結節", furigana: "ざこつけっせつ", image: "hanmakuyoukin.png" },
+{ question: "「ハムストリング(半膜様筋)」の停止は？", answer: "脛骨内側後面", furigana: "けいこつないそくこうめん", image: "hanmakuyoukin.png" },
+{ question: "「ハムストリング(半腱様筋)」の起始は？", answer: "坐骨結節", furigana: "ざこつけっせつ", image: "hankenyoukin.png" },
+{ question: "「ハムストリング(半腱様筋)」の停止は？", answer: "脛骨内側前面(鵞足)", furigana: "けいこつないそくぜんめん (がそく)", image: "hankenyoukin.png" },
+{ question: "「大臀筋」の起始は？", answer: "腸骨稜・仙骨・尾骨・仙結節靭帯", furigana: "ちょうこつりょう・せんこつ・びこつ・せんけっせつじんたい", image: "daidenkin.png" },
+{ question: "「大臀筋」の停止は？", answer: "大腿骨殿筋粗面・腸脛靭帯", furigana: "だいたいこつでんきんそめん・ちょうけいじんたい", image: "daidenkin.png" },
+{ question: "「中臀筋」の起始は？", answer: "腸骨外側面", furigana: "ちょうこつがいそくめん", image: "chuudenkin.png" },
+{ question: "「中臀筋」の停止は？", answer: "大転子", furigana: "だいてんし", image: "chuudenkin.png" },
+{ question: "「小臀筋」の起始は？", answer: "腸骨外側面", furigana: "ちょうこつがいそくめん", image: "shoudenkin.png" },
+{ question: "「小臀筋」の停止は？", answer: "大転子前面", furigana: "だいてんしぜんめん", image: "shoudenkin.png" },
+{ question: "「内転筋群(大内転筋)」の起始は？", answer: "恥骨枝・坐骨枝・坐骨結節", furigana: "ちこつし・ざこつし・ざこつけっせつ", image: "dainaitenkin.png" },
+{ question: "「内転筋群(大内転筋)」の停止は？", answer: "大腿骨粗線・内転筋結節", furigana: "だいたいこつそせん・ないてんきんけっせつ", image: "dainaitenkin.png" },
+{ question: "「縫工筋」の起始は？", answer: "上前腸骨棘", furigana: "じょうぜんちょうこつきょく", image: "houkoukin.png" },
+{ question: "「縫工筋」の停止は？", answer: "脛骨内側前面(鵞足)", furigana: "けいこつないそくぜんめん (がそく)", image: "houkoukin.png" },
+{ question: "「腓腹筋」の起始は？", answer: "大腿骨内外側上顆", furigana: "だいたいこつないがいそくじょうか", image: "hifukukin.png" },
+{ question: "「腓腹筋」の停止は？", answer: "踵骨隆起(アキレス腱)", furigana: "しょうこつりゅうき (あきれすけん)", image: "hifukukin.png" },
+{ question: "「ヒラメ筋」の起始は？", answer: "腓骨頭・脛骨ヒラメ筋線", furigana: "ひこつとう・けいこつひらめきんせん", image: "hiramekin.png" },
+{ question: "「ヒラメ筋」の停止は？", answer: "踵骨隆起(アキレス腱)", furigana: "しょうこつりゅうき (あきれすけん)", image: "hiramekin.png" },
+{ question: "「前脛骨筋」の起始は？", answer: "脛骨外側面・骨間膜", furigana: "けいこつがいそくめん・こっかんまく", image: "zenkeikotsukin.png" },
+{ question: "「前脛骨筋」の停止は？", answer: "内側楔状骨・第1中足骨底", furigana: "ないそくけつじょうこつ・だい1ちゅうそっこつてい", image: "zenkeikotsukin.png" },
+{ question: "「腓骨筋(長腓骨筋)」の起始は？", answer: "腓骨上1/2外側面", furigana: "ひこつじょう 1/2 がいそくめん", image: "chouhikotsukin.png" },
+{ question: "「腓骨筋(長腓骨筋)」の停止は？", answer: "第1中足骨底・内側楔状骨", furigana: "だい1ちゅうそっこつてい・ないそくけつじょうこつ", image: "chouhikotsukin.png" },
+{ question: "「腹直筋」の起始は？", answer: "恥骨", furigana: "ちこつ", image: "fukuchokukin.png" },
+{ question: "「腹直筋」の停止は？", answer: "第5~7肋軟骨・剣状突起", furigana: "だい5〜7ろくなんこつ・けんじょうとっき", image: "fukuchokukin.png" },
+{ question: "「外腹斜筋」の起始は？", answer: "第5~12肋骨外側面", furigana: "だい5〜12ろっこつがいそくめん", image: "gaifukushakin.png" },
+{ question: "「外腹斜筋」の停止は？", answer: "腸骨稜・白線・鼠径靭帯", furigana: "ちょうこつりょう・はくせん・そけいじんたい", image: "gaifukushakin.png" },
+{ question: "「内腹斜筋」の起始は？", answer: "腸骨稜・鼠径靭帯・胸腰筋膜", furigana: "ちょうこつりょう・そけいじんたい・きょうようきんまく", image: "naifukushakin.png" },
+{ question: "「内腹斜筋」の停止は？", answer: "第10~12肋骨・白線", furigana: "だい10〜12ろっこつ・はくせん", image: "naifukushakin.png" },
+{ question: "「腹横筋」の起始は？", answer: "第7~12肋軟骨・腸骨稜・鼠径靭帯・胸腰筋膜", furigana: "だい7〜12ろくなんこつ・ちょうこつりょう・そけいじんたい・きょうようきんまく", image: "fukuoukin.png" },
+{ question: "「腹横筋」の停止は？", answer: "白線・恥骨・腹直筋鞘", furigana: "はくせん・ちこつ・ふくちょくきんしょう", image: "fukuoukin.png" }
 ];
 
 let currentQuestionIndex = 0;
 let isShowingAnswer = false;
 
-let touchStartX = 0;
-let touchEndX = 0;
-
 document.getElementById("start-btn").addEventListener("click", function() {
 document.getElementById("start-screen").style.display = "none";
-document.getElementById("quiz-screen").style.display = "block";
+document.getElementById("quiz-screen").style.display = "flex";
 document.getElementById("logo-container").style.display = "block";
 currentQuestionIndex = 0;
 loadQuestion();
 });
 
-document.getElementById("prev-btn").addEventListener("click", function() {
-if (isShowingAnswer) {
-loadQuestion();
-} else if (currentQuestionIndex > 0) {
-currentQuestionIndex--;
-loadQuestion();
-}
+document.getElementById("reset-btn").addEventListener("click", function() {
+document.getElementById("result-screen").style.display = "none";
+document.getElementById("start-screen").style.display = "flex";
 });
 
-document.getElementById("next-btn").addEventListener("click", function() {
+const quizScreen = document.getElementById("quiz-screen");
+let touchStartX = 0;
+let touchEndX = 0;
+let isSwiping = false;
+
+quizScreen.addEventListener("touchstart", function(e) {
+touchStartX = e.changedTouches[0].screenX;
+isSwiping = false;
+}, {passive: true});
+
+quizScreen.addEventListener("touchend", function(e) {
+touchEndX = e.changedTouches[0].screenX;
+const threshold = 50;
+
+if (touchEndX < touchStartX - threshold) {
+isSwiping = true;
+advanceState();
+} else if (touchEndX > touchStartX + threshold) {
+isSwiping = true;
+goBackState();
+}
+}, {passive: true});
+
+quizScreen.addEventListener("click", function() {
+if (isSwiping) return;
+advanceState();
+});
+
+function advanceState() {
 if (!isShowingAnswer) {
 showAnswer();
 } else {
@@ -185,30 +201,14 @@ loadQuestion();
 showResult();
 }
 }
-});
-
-document.getElementById("reset-btn").addEventListener("click", function() {
-document.getElementById("result-screen").style.display = "none";
-document.getElementById("start-screen").style.display = "block";
-});
-
-const quizContainer = document.getElementById("quiz-container");
-quizContainer.addEventListener("touchstart", function(e) {
-touchStartX = e.changedTouches[0].screenX;
-}, {passive: true});
-
-quizContainer.addEventListener("touchend", function(e) {
-touchEndX = e.changedTouches[0].screenX;
-handleSwipe();
-}, {passive: true});
-
-function handleSwipe() {
-const threshold = 50;
-if (touchEndX < touchStartX - threshold) {
-document.getElementById("next-btn").click();
 }
-if (touchEndX > touchStartX + threshold) {
-document.getElementById("prev-btn").click();
+
+function goBackState() {
+if (isShowingAnswer) {
+loadQuestion();
+} else if (currentQuestionIndex > 0) {
+currentQuestionIndex--;
+loadQuestion();
 }
 }
 
@@ -220,10 +220,14 @@ document.getElementById("question-text").textContent = "Q" + (currentQuestionInd
 
 document.getElementById("furigana-container").style.display = "none";
 document.getElementById("answer-container").style.display = "none";
-document.getElementById("muscle-img-wrapper").style.display = "none";
 
-document.getElementById("prev-btn").disabled = (currentQuestionIndex === 0 && !isShowingAnswer);
-document.getElementById("next-btn").textContent = "答えを見る";
+const muscleImg = document.getElementById("muscle-img");
+if (currentQuiz.image) {
+muscleImg.src = currentQuiz.image;
+document.getElementById("muscle-img-wrapper").style.display = "block";
+} else {
+document.getElementById("muscle-img-wrapper").style.display = "none";
+}
 }
 
 function showAnswer() {
@@ -239,20 +243,6 @@ furiganaContainer.style.display = "block";
 const answerContainer = document.getElementById("answer-container");
 answerContainer.textContent = currentQuiz.answer;
 answerContainer.style.display = "block";
-
-const muscleImg = document.getElementById("muscle-img");
-if (currentQuiz.image) {
-muscleImg.src = currentQuiz.image;
-document.getElementById("muscle-img-wrapper").style.display = "block";
-}
-
-document.getElementById("prev-btn").disabled = false;
-
-if (currentQuestionIndex === quizData.length - 1) {
-document.getElementById("next-btn").textContent = "完了する";
-} else {
-document.getElementById("next-btn").textContent = "次の問題";
-}
 }
 
 function showResult() {
