@@ -149,7 +149,8 @@ const quizData = [
 let currentQuestionIndex = 0;
 let isShowingAnswer = false;
 
-document.getElementById("start-btn").addEventListener("click", function() {
+document.getElementById("start-btn").addEventListener("click", function(e) {
+e.stopPropagation();
 document.getElementById("start-screen").style.display = "none";
 document.getElementById("quiz-screen").style.display = "flex";
 document.getElementById("logo-container").style.display = "block";
@@ -157,7 +158,8 @@ currentQuestionIndex = 0;
 loadQuestion();
 });
 
-document.getElementById("reset-btn").addEventListener("click", function() {
+document.getElementById("reset-btn").addEventListener("click", function(e) {
+e.stopPropagation();
 document.getElementById("result-screen").style.display = "none";
 document.getElementById("start-screen").style.display = "flex";
 });
